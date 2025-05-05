@@ -1,1 +1,1 @@
-rootProject.name = "HabitX"
+rootProject.name = "HabitX-Backend01"
