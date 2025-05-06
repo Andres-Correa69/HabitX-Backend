@@ -1,10 +1,13 @@
 package co.edu.uniquindio.habitx.controller;
 
 import co.edu.uniquindio.habitx.model.PerfilNutricional;
+import co.edu.uniquindio.habitx.model.PlanAlimentacion;
 import co.edu.uniquindio.habitx.repositories.PerfilNutricionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/perfiles")
@@ -13,6 +16,10 @@ public class PerfilNutricionalController {
     @Autowired
     private PerfilNutricionalRepository perfilNutricionalRepository;
 
+    @GetMapping
+    public List<PerfilNutricional> getAllPerfilesNutricionales() {
+        return perfilNutricionalRepository.findAll();
+    }
     @GetMapping("/{id}")
     public PerfilNutricional getPerfilNutricionalById(@PathVariable Integer id) {
         return perfilNutricionalRepository.findById(id).orElse(null);
