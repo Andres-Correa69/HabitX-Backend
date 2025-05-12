@@ -1,8 +1,12 @@
 package co.edu.uniquindio.habitx.controller;
 
+import co.edu.uniquindio.habitx.model.CuentaUsuario;
 import co.edu.uniquindio.habitx.model.Usuario;
+import co.edu.uniquindio.habitx.repositories.CuentaUsuarioRepository;
 import co.edu.uniquindio.habitx.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -13,6 +17,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CuentaUsuarioRepository cuentaUsuarioRepository;
 
     @GetMapping
     public List<Usuario> getAllUsuarios() {
@@ -25,9 +32,21 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public Usuario createUsuario(@Valid @RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public ResponseEntity<Usuario> createUsuario(@Valid @RequestBody Usuario usuario) {
+        // 1. Guardar el nuevo usuario
+        Usuario nuevoUsuario = usuarioRepository.save(usuario);
+
+        // 2. Crear una nueva CuentaUsuario y asociarla al usuario creado
+        CuentaUsuario nuevaCuentaUsuario = new CuentaUsuario();
+        nuevaCuentaUsuario.setUsuario(nuevoUsuario);
+
+        // 3. Guardar la nueva CuentaUsuario
+        cuentaUsuarioRepository.save(nuevaCuentaUsuario);
+
+        // 4. Devolver el usuario creado con un código de éxito
+        return new ResponseEntity<>(nuevoUsuario, HttpStatus.CREATED);
     }
+
 
     @PutMapping("/{id}")
     public Usuario updateUsuario(@PathVariable Integer id, @Valid @RequestBody Usuario usuario) {
