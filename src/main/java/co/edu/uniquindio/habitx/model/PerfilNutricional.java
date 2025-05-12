@@ -2,6 +2,7 @@ package co.edu.uniquindio.habitx.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
@@ -24,8 +25,9 @@ public class PerfilNutricional {
 
     private Float imc;
 
-//    @ManyToOne
-//    @JoinColumn(name = "idSeguimientoNutricional")
-//    private SeguimientoNutricional seguimientoNutricional;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    @JsonBackReference
+    private Usuario usuario;
 
 }

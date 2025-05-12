@@ -1,6 +1,7 @@
 package co.edu.uniquindio.habitx.model;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -41,8 +42,9 @@ public class Usuario {
     @JoinColumn(name = "idLogin")
     private Login login;
 
-    @ManyToOne
-    @JoinColumn(name = "idPerfilNutricional")
+    @OneToOne
+    @JoinColumn(name = "id_perfil_nutricional")
+    @JsonManagedReference
     private PerfilNutricional perfilNutricional;
 
     @OneToMany(mappedBy = "usuario")
