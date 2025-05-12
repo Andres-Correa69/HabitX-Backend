@@ -22,8 +22,8 @@ public class DetalleAlimentacion {
     @OneToMany(mappedBy = "detalleAlimentacion") // <<--- Corregimos el mappedBy
     private List<PlanAlimentacion> planesAlimentacion;
 
-//    @OneToMany(mappedBy = "detalleAlimentacion")
-//    private List<Receta> recetas;
+    @OneToMany(mappedBy = "detalleAlimentacion")
+    private List<Receta> recetas;
 
     @OneToMany(mappedBy = "detalleAlimentacion")
     private List<SeguimientoNutricional> seguimientosNutricionales;

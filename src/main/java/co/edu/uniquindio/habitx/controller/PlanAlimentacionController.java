@@ -1,9 +1,7 @@
 package co.edu.uniquindio.habitx.controller;
 
-import co.edu.uniquindio.habitx.model.CuentaUsuario;
-import co.edu.uniquindio.habitx.model.ObjetivoNutricional;
-import co.edu.uniquindio.habitx.model.PlanAlimentacion;
-import co.edu.uniquindio.habitx.model.Usuario;
+import co.edu.uniquindio.habitx.model.*;
+import co.edu.uniquindio.habitx.repositories.DetalleAlimentacionRepository;
 import co.edu.uniquindio.habitx.repositories.ObjetivoNutricionalRepository;
 import co.edu.uniquindio.habitx.repositories.PlanAlimentacionRepository;
 import co.edu.uniquindio.habitx.repositories.UsuarioRepository;
@@ -27,6 +25,10 @@ public class PlanAlimentacionController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private DetalleAlimentacionRepository detalleAlimentacionRepository;
+
     @GetMapping
     public List<PlanAlimentacion> getAllPlanesAlimentacion() {
         return planAlimentacionRepository.findAll();
@@ -76,7 +78,8 @@ public class PlanAlimentacionController {
     @PostMapping("/{idUsuario}/objetivos")
     public ResponseEntity<PlanAlimentacion> crearPlanAlimentacionParaUsuario(
             @PathVariable Integer idUsuario,
-            @Valid @RequestBody PlanAlimentacion nuevoPlanAlimentacion) {
+            @Valid @RequestBody PlanAlimentacion nuevoPlanAlimentacion,
+            @RequestParam(value = "idDetalleAlimentacion", required = false) Integer idDetalleAlimentacion) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
 
         if (usuarioOptional.isPresent()) {
@@ -85,6 +88,10 @@ public class PlanAlimentacionController {
 
             if (objetivoDelUsuario != null) {
                 nuevoPlanAlimentacion.setObjetivoNutricional(objetivoDelUsuario);
+                if (idDetalleAlimentacion != null) {
+                    Optional<DetalleAlimentacion> detalleAlimentacionOptional = detalleAlimentacionRepository.findById(idDetalleAlimentacion);
+                    detalleAlimentacionOptional.ifPresent(nuevoPlanAlimentacion::setDetalleAlimentacion);
+                }
                 PlanAlimentacion planGuardado = planAlimentacionRepository.save(nuevoPlanAlimentacion);
                 return new ResponseEntity<>(planGuardado, HttpStatus.CREATED);
             } else {
