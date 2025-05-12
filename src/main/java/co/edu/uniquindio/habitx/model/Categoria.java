@@ -1,6 +1,7 @@
 package co.edu.uniquindio.habitx.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -21,5 +22,6 @@ public class Categoria {
     private String nombre;
 
     @OneToMany(mappedBy = "categoria")
+    @JsonIgnore
     private List<ArticuloNutricional> articulosNutricionales;
 }
