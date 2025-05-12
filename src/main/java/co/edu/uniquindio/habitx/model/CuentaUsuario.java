@@ -1,8 +1,9 @@
 package co.edu.uniquindio.habitx.model;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "CuentaUsuario")
@@ -17,9 +18,13 @@ public class CuentaUsuario {
     @JoinColumn(name = "idUsuario", unique = true)
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "idRecompensa")
-    private Recompensa recompensa;
+    @ManyToMany
+    @JoinTable(
+            name = "CuentaUsuario_Recompensa",
+            joinColumns = @JoinColumn(name = "idCuentaUsuario"),
+            inverseJoinColumns = @JoinColumn(name = "idRecompensa")
+    )
+    private List<Recompensa> recompensas;
 
     @ManyToOne
     @JoinColumn(name = "idNivelCuenta")

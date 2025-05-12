@@ -1,11 +1,8 @@
 package co.edu.uniquindio.habitx.model;
-
-
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -26,13 +23,9 @@ public class Recompensa {
     @JoinColumn(name = "idNivelCuenta")
     private NivelCuenta nivelCuenta;
 
-    @OneToMany(mappedBy = "recompensa")
+    @ManyToMany(mappedBy = "recompensas")
     private List<CuentaUsuario> cuentasUsuario;
 
-    @Column(nullable = false) // Indica que el campo no puede ser nulo en la base de datos
+    @Column(nullable = false)
     private Boolean activo;
-
-    // Puedes agregar una anotación para establecer un valor por defecto si lo deseas
-    // @ColumnDefault("true")
-    // private Boolean activo;
 }
