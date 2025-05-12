@@ -35,5 +35,6 @@ public class PlanAlimentacion {
     private DetalleAlimentacion detalleAlimentacion;
 
     @OneToMany(mappedBy = "planAlimentacion")
+    @JsonManagedReference
     private List<DesafioAlimentacion> desafiosAlimentacion;
 }
