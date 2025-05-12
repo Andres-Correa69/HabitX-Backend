@@ -48,6 +48,7 @@ public class Usuario {
     private PerfilNutricional perfilNutricional;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference
     private List<ObjetivoNutricional> objetivos;
 
     @ManyToMany
