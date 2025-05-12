@@ -83,7 +83,7 @@ public class PlanAlimentacionController {
             @PathVariable Integer idUsuario,
             @Valid @RequestBody PlanAlimentacion nuevoPlanAlimentacion,
             @RequestParam(value = "idDetalleAlimentacion", required = false) Integer idDetalleAlimentacion,
-            @RequestParam(value = "desafioIds", required = false) List<Integer> desafioIds) { // Nuevo parámetro
+            @RequestParam(value = "desafioIds", required = false) List<Integer> desafioIds) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
 
         if (usuarioOptional.isPresent()) {
@@ -107,9 +107,13 @@ public class PlanAlimentacionController {
                     for (DesafioAlimentacion desafio : desafios) {
                         desafio.setPlanAlimentacion(planGuardado); // Asocia cada desafío al plan guardado
                     }
-                    desafioAlimentacionRepository.saveAll(desafios); // Guarda los desafíos actualizados
+                    planGuardado.setDesafiosAlimentacion(desafios); // Establece la relación en el plan
+                    planAlimentacionRepository.save(planGuardado); // Guarda el plan actualizado con los desafíos
                 }
-                return new ResponseEntity<>(planGuardado, HttpStatus.CREATED);
+
+                // Recargar el plan desde la base de datos para asegurar que la respuesta incluya los desafíos
+                PlanAlimentacion resultado = planAlimentacionRepository.findById(planGuardado.getIdPlanAlimentacion()).orElse(null);
+                return new ResponseEntity<>(resultado, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND); // El usuario no tiene un objetivo definido
             }
