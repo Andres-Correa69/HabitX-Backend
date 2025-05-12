@@ -47,9 +47,9 @@ public class Usuario {
     @JsonManagedReference
     private PerfilNutricional perfilNutricional;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<ObjetivoNutricional> objetivos;
+    private ObjetivoNutricional objetivo; // Cambia List a un solo ObjetivoNutricional
 
     @ManyToMany
     @JoinTable(

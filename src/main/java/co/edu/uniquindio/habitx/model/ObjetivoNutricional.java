@@ -22,8 +22,8 @@ public class ObjetivoNutricional {
     @Size(max = 255, message = "La descripción no puede exceder los 255 caracteres")
     private String descripcion;
 
-    @ManyToOne
-    @JoinColumn(name = "idUsuario")
+    @OneToOne // Cambia ManyToOne a OneToOne
+    @JoinColumn(name = "idUsuario", unique = true) // Asegura que solo un usuario esté asociado
     @JsonBackReference
     private Usuario usuario;
 
