@@ -95,49 +95,56 @@ public class PlanAlimentacionController {
         }
     }
 
-    @PutMapping("/objetivos/{idObjetivo}")
-    public ResponseEntity<PlanAlimentacion> actualizarPlanAlimentacionDeObjetivoUsuario(
+    // Nuevo endpoint para actualizar un plan de alimentación específico dentro de un objetivo
+    @PutMapping("/{idObjetivo}/{idPlan}")
+    public ResponseEntity<PlanAlimentacion> actualizarPlanAlimentacionDeObjetivo(
             @PathVariable Integer idObjetivo,
+            @PathVariable Integer idPlan,
             @Valid @RequestBody PlanAlimentacion planActualizado) {
         Optional<ObjetivoNutricional> objetivoOptional = objetivoNutricionalRepository.findById(idObjetivo);
+        Optional<PlanAlimentacion> planOptional = planAlimentacionRepository.findById(idPlan);
 
-        if (objetivoOptional.isPresent()) {
-            ObjetivoNutricional objetivo = objetivoOptional.get();
-            PlanAlimentacion planExistente = (PlanAlimentacion) objetivo.getPlanAlimentacion();
-
-            if (planExistente != null) {
+        if (objetivoOptional.isPresent() && planOptional.isPresent()) {
+            PlanAlimentacion planExistente = planOptional.get();
+            if (planExistente.getObjetivoNutricional().getIdObjetivoNutricional().equals(idObjetivo)) {
                 planExistente.setNombre(planActualizado.getNombre());
                 planExistente.setFechaInicio(planActualizado.getFechaInicio());
                 PlanAlimentacion planGuardado = planAlimentacionRepository.save(planExistente);
                 return new ResponseEntity<>(planGuardado, HttpStatus.OK);
             } else {
-                // El objetivo no tiene un plan asociado, podrías crearlo aquí si lo deseas
-                planActualizado.setObjetivoNutricional(objetivo);
-                PlanAlimentacion planCreado = planAlimentacionRepository.save(planActualizado);
-                return new ResponseEntity<>(planCreado, HttpStatus.CREATED);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN); // El plan no pertenece a este objetivo
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Objetivo no encontrado
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Objetivo o Plan no encontrado
         }
     }
 
-    @DeleteMapping("/objetivos/{idObjetivo}")
-    public ResponseEntity<Void> eliminarPlanAlimentacionDeObjetivoUsuario(
-            @PathVariable Integer idObjetivo) {
+    // Nuevo endpoint para eliminar un plan de alimentación específico dentro de un objetivo
+    @DeleteMapping("/{idObjetivo}/{idPlan}")
+    public ResponseEntity<Void> eliminarPlanAlimentacionDeObjetivo(
+            @PathVariable Integer idObjetivo,
+            @PathVariable Integer idPlan) {
         Optional<ObjetivoNutricional> objetivoOptional = objetivoNutricionalRepository.findById(idObjetivo);
+        Optional<PlanAlimentacion> planOptional = planAlimentacionRepository.findById(idPlan);
 
-        if (objetivoOptional.isPresent()) {
-            ObjetivoNutricional objetivo = objetivoOptional.get();
-            PlanAlimentacion planExistente = (PlanAlimentacion) objetivo.getPlanAlimentacion();
-
-            if (planExistente != null) {
-                planAlimentacionRepository.delete(planExistente);
+        if (objetivoOptional.isPresent() && planOptional.isPresent()) {
+            PlanAlimentacion planExistente = planOptional.get();
+            if (planExistente.getObjetivoNutricional().getIdObjetivoNutricional().equals(idObjetivo)) {
+                planAlimentacionRepository.deleteById(idPlan);
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Eliminación exitosa
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND); // El objetivo no tiene un plan asociado
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN); // El plan no pertenece a este objetivo
             }
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Objetivo no encontrado
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Objetivo o Plan no encontrado
         }
+    }
+
+    // (Opcional) Endpoint para obtener todos los planes de un objetivo
+    @GetMapping("/{idObjetivo}")
+    public ResponseEntity<List<PlanAlimentacion>> obtenerPlanesDeObjetivo(@PathVariable Integer idObjetivo) {
+        Optional<ObjetivoNutricional> objetivoOptional = objetivoNutricionalRepository.findById(idObjetivo);
+        return objetivoOptional.map(objetivo -> new ResponseEntity<>(objetivo.getPlanAlimentacion(), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
