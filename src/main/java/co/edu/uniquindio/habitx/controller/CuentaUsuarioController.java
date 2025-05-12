@@ -26,7 +26,7 @@ public class CuentaUsuarioController {
         return new ResponseEntity<>(cuentasUsuario, HttpStatus.OK);
     }
 
-    @GetMapping("/usuario/{id}") // Modificamos la ruta para indicar que el ID es de Usuario
+    @GetMapping("/usuario/{idUsuario}") // Modificamos la ruta para indicar que el ID es de Usuario
     public ResponseEntity<CuentaUsuario> obtenerCuentaUsuarioPorIdUsuario(@PathVariable Integer idUsuario) {
         Optional<CuentaUsuario> cuentaUsuarioOptional = cuentaUsuarioRepository.findByUsuarioIdUsuario(idUsuario);
         return cuentaUsuarioOptional.map(cuentaUsuario -> new ResponseEntity<>(cuentaUsuario, HttpStatus.OK))
