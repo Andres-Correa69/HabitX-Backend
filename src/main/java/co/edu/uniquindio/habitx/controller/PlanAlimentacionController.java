@@ -1,10 +1,7 @@
 package co.edu.uniquindio.habitx.controller;
 
 import co.edu.uniquindio.habitx.model.*;
-import co.edu.uniquindio.habitx.repositories.DetalleAlimentacionRepository;
-import co.edu.uniquindio.habitx.repositories.ObjetivoNutricionalRepository;
-import co.edu.uniquindio.habitx.repositories.PlanAlimentacionRepository;
-import co.edu.uniquindio.habitx.repositories.UsuarioRepository;
+import co.edu.uniquindio.habitx.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +26,10 @@ public class PlanAlimentacionController {
 
     @Autowired
     private DetalleAlimentacionRepository detalleAlimentacionRepository;
+
+
+    @Autowired
+    private DesafioAlimentacionRepository desafioAlimentacionRepository;
 
     @GetMapping
     public List<PlanAlimentacion> getAllPlanesAlimentacion() {
@@ -76,10 +77,13 @@ public class PlanAlimentacionController {
     }
 
 
+
     @PostMapping("/{idUsuario}/objetivos")
     public ResponseEntity<PlanAlimentacion> crearPlanAlimentacionParaUsuario(
             @PathVariable Integer idUsuario,
-            @Valid @RequestBody PlanAlimentacion nuevoPlanAlimentacion) {
+            @Valid @RequestBody PlanAlimentacion nuevoPlanAlimentacion,
+            @RequestParam(value = "idDetalleAlimentacion", required = false) Integer idDetalleAlimentacion,
+            @RequestParam(value = "desafioIds", required = false) List<Integer> desafioIds) { // Nuevo parámetro
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
 
         if (usuarioOptional.isPresent()) {
@@ -89,14 +93,22 @@ public class PlanAlimentacionController {
             if (objetivoDelUsuario != null) {
                 nuevoPlanAlimentacion.setObjetivoNutricional(objetivoDelUsuario);
 
-                // Generar un ID aleatorio entre 1 y 5 (inclusive)
+                // Asignar DetalleAlimentacion aleatorio
                 Random random = new Random();
                 int idDetalleAlimentacionAleatorio = random.nextInt(5) + 1;
-
                 Optional<DetalleAlimentacion> detalleAlimentacionOptional = detalleAlimentacionRepository.findById(idDetalleAlimentacionAleatorio);
                 detalleAlimentacionOptional.ifPresent(nuevoPlanAlimentacion::setDetalleAlimentacion);
 
                 PlanAlimentacion planGuardado = planAlimentacionRepository.save(nuevoPlanAlimentacion);
+
+                // Asignar Desafíos si se proporcionan IDs
+                if (desafioIds != null && !desafioIds.isEmpty()) {
+                    List<DesafioAlimentacion> desafios = desafioAlimentacionRepository.findAllById(desafioIds);
+                    for (DesafioAlimentacion desafio : desafios) {
+                        desafio.setPlanAlimentacion(planGuardado); // Asocia cada desafío al plan guardado
+                    }
+                    desafioAlimentacionRepository.saveAll(desafios); // Guarda los desafíos actualizados
+                }
                 return new ResponseEntity<>(planGuardado, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND); // El usuario no tiene un objetivo definido
@@ -105,7 +117,6 @@ public class PlanAlimentacionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
         }
     }
-
     // Nuevo endpoint para actualizar un plan de alimentación específico dentro de un objetivo
     @PutMapping("/{idObjetivo}/{idPlan}")
     public ResponseEntity<PlanAlimentacion> actualizarPlanAlimentacionDeObjetivo(
