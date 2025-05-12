@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -99,17 +101,15 @@ public class PlanAlimentacionController {
                 Optional<DetalleAlimentacion> detalleAlimentacionOptional = detalleAlimentacionRepository.findById(idDetalleAlimentacionAleatorio);
                 detalleAlimentacionOptional.ifPresent(nuevoPlanAlimentacion::setDetalleAlimentacion);
 
-                PlanAlimentacion planGuardado = planAlimentacionRepository.save(nuevoPlanAlimentacion);
-
                 // Asignar Desafíos si se proporcionan IDs
+                List<DesafioAlimentacion> desafios = new ArrayList<>();
                 if (desafioIds != null && !desafioIds.isEmpty()) {
-                    List<DesafioAlimentacion> desafios = desafioAlimentacionRepository.findAllById(desafioIds);
-                    for (DesafioAlimentacion desafio : desafios) {
-                        desafio.setPlanAlimentacion(planGuardado); // Asocia cada desafío al plan guardado
-                    }
-                    planGuardado.setDesafiosAlimentacion(desafios); // Establece la relación en el plan
-                    planAlimentacionRepository.save(planGuardado); // Guarda el plan actualizado con los desafíos
+                    desafios = desafioAlimentacionRepository.findAllById(desafioIds);
+                    nuevoPlanAlimentacion.setDesafiosAlimentacion(desafios); // Establece la relación en el plan
                 }
+                PlanAlimentacion planGuardado = planAlimentacionRepository.save(nuevoPlanAlimentacion);
+                planGuardado.setDesafiosAlimentacion(desafios);
+                planAlimentacionRepository.save(planGuardado);
 
                 // Recargar el plan desde la base de datos para asegurar que la respuesta incluya los desafíos
                 PlanAlimentacion resultado = planAlimentacionRepository.findById(planGuardado.getIdPlanAlimentacion()).orElse(null);
@@ -121,6 +121,7 @@ public class PlanAlimentacionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
         }
     }
+
     // Nuevo endpoint para actualizar un plan de alimentación específico dentro de un objetivo
     @PutMapping("/{idObjetivo}/{idPlan}")
     public ResponseEntity<PlanAlimentacion> actualizarPlanAlimentacionDeObjetivo(
