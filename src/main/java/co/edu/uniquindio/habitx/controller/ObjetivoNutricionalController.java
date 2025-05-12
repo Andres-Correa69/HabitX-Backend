@@ -53,6 +53,31 @@
             return null;
         }
 
+        @PutMapping("/update/{idUsuario}")
+        public ResponseEntity<ObjetivoNutricional> actualizarObjetivoDeUsuario(
+                @PathVariable Integer idUsuario,
+                @Valid @RequestBody ObjetivoNutricional nuevoObjetivo) {
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
+
+            if (usuarioOptional.isPresent()) {
+                Usuario usuario = usuarioOptional.get();
+                ObjetivoNutricional objetivoExistente = usuario.getObjetivo();
+
+                if (objetivoExistente != null) {
+                    objetivoExistente.setDescripcion(nuevoObjetivo.getDescripcion());
+                    ObjetivoNutricional objetivoActualizado = objetivoNutricionalRepository.save(objetivoExistente);
+                    return new ResponseEntity<>(objetivoActualizado, HttpStatus.OK);
+                } else {
+                    // El usuario no tiene un objetivo definido, podrías crear uno nuevo aquí si lo deseas
+                    nuevoObjetivo.setUsuario(usuario);
+                    ObjetivoNutricional nuevoObjetivoGuardado = objetivoNutricionalRepository.save(nuevoObjetivo);
+                    return new ResponseEntity<>(nuevoObjetivoGuardado, HttpStatus.CREATED);
+                }
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Usuario no encontrado
+            }
+        }
+
         @DeleteMapping("/{id}")
         public void deleteObjetivoNutricional(@PathVariable Integer id) {
             objetivoNutricionalRepository.deleteById(id);
