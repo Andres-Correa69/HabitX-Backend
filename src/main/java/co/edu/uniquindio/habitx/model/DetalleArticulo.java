@@ -11,10 +11,10 @@ import jakarta.validation.constraints.Size;
 public class DetalleArticulo {
 
     @NotBlank(message = "El título del detalle es obligatorio")
-    @Size(max = 100, message = "El título del detalle no puede exceder los 100 caracteres")
+    @Size(max = 300, message = "El título del detalle no puede exceder los 100 caracteres")
     private String titulo;
 
     @NotBlank(message = "La descripción del detalle es obligatoria")
-    @Size(max = 1000, message = "La descripción del detalle no puede exceder los 255 caracteres")
+    @Size(max = 10000, message = "La descripción del detalle no puede exceder los 255 caracteres")
     private String descripcion;
 }
