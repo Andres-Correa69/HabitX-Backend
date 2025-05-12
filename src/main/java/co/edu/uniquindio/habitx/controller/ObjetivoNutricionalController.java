@@ -34,7 +34,7 @@
         }
 
         @GetMapping("/usuarios/{usuarioId}")
-        public List<ObjetivoNutricional> getObjetivosNutricionalesByUsuarioId(@PathVariable Integer usuarioId) {
+        public ObjetivoNutricional getObjetivosNutricionalesByUsuarioId(@PathVariable Integer usuarioId) {
             return objetivoNutricionalRepository.findByUsuarioIdUsuario(usuarioId);
         }
 

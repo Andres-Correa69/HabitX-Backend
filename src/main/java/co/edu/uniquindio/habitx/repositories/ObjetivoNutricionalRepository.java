@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface ObjetivoNutricionalRepository extends JpaRepository<ObjetivoNutricional, Integer> {
-    List<ObjetivoNutricional> findByUsuarioIdUsuario(Integer usuarioId);
+    ObjetivoNutricional findByUsuarioIdUsuario(Integer usuarioId);
 }
