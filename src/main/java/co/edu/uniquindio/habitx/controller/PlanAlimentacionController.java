@@ -102,17 +102,19 @@ public class PlanAlimentacionController {
                 detalleAlimentacionOptional.ifPresent(nuevoPlanAlimentacion::setDetalleAlimentacion);
 
                 // Asignar Desafíos si se proporcionan IDs
-                List<DesafioAlimentacion> desafios = new ArrayList<>();
+                List<DesafioAlimentacion> desafios = desafioAlimentacionRepository.findAll();
                 if (desafioIds != null && !desafioIds.isEmpty()) {
                     desafios = desafioAlimentacionRepository.findAllById(desafioIds);
                     nuevoPlanAlimentacion.setDesafiosAlimentacion(desafios); // Establece la relación en el plan
                 }
                 PlanAlimentacion planGuardado = planAlimentacionRepository.save(nuevoPlanAlimentacion);
-                planGuardado.setDesafiosAlimentacion(desafios);
-                planAlimentacionRepository.save(planGuardado);
+
 
                 // Recargar el plan desde la base de datos para asegurar que la respuesta incluya los desafíos
                 PlanAlimentacion resultado = planAlimentacionRepository.findById(planGuardado.getIdPlanAlimentacion()).orElse(null);
+                if (resultado != null && resultado.getDesafiosAlimentacion() == null) {
+                    resultado.setDesafiosAlimentacion(desafios);
+                }
                 return new ResponseEntity<>(resultado, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND); // El usuario no tiene un objetivo definido
