@@ -1,5 +1,7 @@
 package co.edu.uniquindio.habitx.model;
 
+
+
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -31,4 +33,8 @@ public class ArticuloNutricional {
 
     @ManyToMany(mappedBy = "articulosNutricionales")
     private List<Usuario> usuarios; // Relación ManyToMany con Usuario
+
+    @ElementCollection
+    @CollectionTable(name = "DetalleArticulo", joinColumns = @JoinColumn(name = "idArticuloNutricional"))
+    private List<DetalleArticulo> detallesAdicionales;
 }
