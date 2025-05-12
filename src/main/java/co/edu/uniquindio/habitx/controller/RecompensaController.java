@@ -19,11 +19,11 @@ public class RecompensaController {
 
     @Autowired
     private RecompensaRepository recompensaRepository;
-
     @GetMapping
     public ResponseEntity<List<Recompensa>> listarRecompensas() {
         return new ResponseEntity<>(recompensaRepository.findAll(), HttpStatus.OK);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Recompensa> obtenerRecompensa(@PathVariable Integer id) {
