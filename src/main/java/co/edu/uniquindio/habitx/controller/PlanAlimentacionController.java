@@ -1,11 +1,15 @@
 package co.edu.uniquindio.habitx.controller;
 
+import co.edu.uniquindio.habitx.model.CuentaUsuario;
 import co.edu.uniquindio.habitx.model.PlanAlimentacion;
 import co.edu.uniquindio.habitx.repositories.PlanAlimentacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/planes")
@@ -22,6 +26,15 @@ public class PlanAlimentacionController {
     @GetMapping("/{id}")
     public PlanAlimentacion getPlanAlimentacionById(@PathVariable Integer id) {
         return planAlimentacionRepository.findById(id).orElse(null);
+    }
+
+    @GetMapping("/usuario/{idUsuario}") // Endpoint para buscar por idUsuario
+    public ResponseEntity<List<PlanAlimentacion>> obtenerPlanesAlimentacionPorUsuario(@PathVariable Integer idUsuario) {
+        List<PlanAlimentacion> planesAlimentacion = planAlimentacionRepository.findByObjetivoNutricional_Usuario_IdUsuario(idUsuario);
+        if (planesAlimentacion.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(planesAlimentacion, HttpStatus.OK);
     }
 
     @GetMapping("/objetivos/{objetivoId}")

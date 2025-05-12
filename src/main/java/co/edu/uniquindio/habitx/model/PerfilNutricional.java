@@ -25,6 +25,11 @@ public class PerfilNutricional {
 
     private Float imc;
 
+    //La relacion puede ser @OneToOne o @ManyToOne, dependiendo de la cardinalidad
+    @OneToOne // <<--- Relación con SeguimientoNutricional
+    @JoinColumn(name = "idSeguimientoNutricional")
+    private SeguimientoNutricional seguimientoNutricional;
+
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     @JsonBackReference
