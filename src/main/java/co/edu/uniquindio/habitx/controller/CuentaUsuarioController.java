@@ -22,7 +22,8 @@ public class CuentaUsuarioController {
 
     @GetMapping
     public ResponseEntity<List<CuentaUsuario>> listarCuentasUsuario() {
-        return new ResponseEntity<>(cuentaUsuarioRepository.findAll(), HttpStatus.OK);
+        List<CuentaUsuario> cuentasUsuario = cuentaUsuarioRepository.findAll(); // Si usas EAGER
+        return new ResponseEntity<>(cuentasUsuario, HttpStatus.OK);
     }
 
     @GetMapping("/usuario/{id}") // Modificamos la ruta para indicar que el ID es de Usuario

@@ -1,5 +1,7 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,6 +26,7 @@ public class CuentaUsuario {
             joinColumns = @JoinColumn(name = "idCuentaUsuario"),
             inverseJoinColumns = @JoinColumn(name = "idRecompensa")
     )
+    @JsonManagedReference
     private List<Recompensa> recompensas;
 
     @ManyToOne

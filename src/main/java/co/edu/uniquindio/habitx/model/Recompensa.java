@@ -1,4 +1,5 @@
 package co.edu.uniquindio.habitx.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +25,7 @@ public class Recompensa {
     private NivelCuenta nivelCuenta;
 
     @ManyToMany(mappedBy = "recompensas")
+    @JsonBackReference
     private List<CuentaUsuario> cuentasUsuario;
 
     @Column(nullable = false)
