@@ -120,4 +120,24 @@ public class PlanAlimentacionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Objetivo no encontrado
         }
     }
+
+    @DeleteMapping("/objetivos/{idObjetivo}")
+    public ResponseEntity<Void> eliminarPlanAlimentacionDeObjetivoUsuario(
+            @PathVariable Integer idObjetivo) {
+        Optional<ObjetivoNutricional> objetivoOptional = objetivoNutricionalRepository.findById(idObjetivo);
+
+        if (objetivoOptional.isPresent()) {
+            ObjetivoNutricional objetivo = objetivoOptional.get();
+            PlanAlimentacion planExistente = objetivo.getPlanAlimentacion();
+
+            if (planExistente != null) {
+                planAlimentacionRepository.delete(planExistente);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Eliminación exitosa
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND); // El objetivo no tiene un plan asociado
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Objetivo no encontrado
+        }
+    }
 }
