@@ -1,5 +1,6 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -27,5 +28,6 @@ public class Receta {
 
     @ManyToOne
     @JoinColumn(name = "idDetalleAlimentacion")
+    @JsonBackReference
     private DetalleAlimentacion detalleAlimentacion;
 }
