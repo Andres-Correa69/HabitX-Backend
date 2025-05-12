@@ -1,5 +1,6 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -16,9 +17,10 @@ public class PlanAlimentacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPlanAlimentacion;
 
-    @ManyToOne
-    @JoinColumn(name = "idObjetivoNutricional")
-    private ObjetivoNutricional objetivoNutricional;
+    @OneToOne
+    @JoinColumn(name = "idObjetivoNutricional", unique = true)
+    @JsonBackReference
+    private ObjetivoNutricional objetivoNutricional; // Nombre consistente
 
     @NotBlank(message = "El nombre del plan es obligatorio")
     @Size(max = 555, message = "El nombre del plan no puede exceder los 45 caracteres")
@@ -26,7 +28,7 @@ public class PlanAlimentacion {
 
     private LocalDateTime fechaInicio;
 
-    @ManyToOne // <<--- Aquí está la relación con DetalleAlimentacion
+    @ManyToOne
     @JoinColumn(name = "idDetalleAlimentacion")
     private DetalleAlimentacion detalleAlimentacion;
 
