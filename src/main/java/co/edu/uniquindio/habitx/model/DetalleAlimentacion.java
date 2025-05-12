@@ -21,9 +21,9 @@ public class DetalleAlimentacion {
     @Min(value = 1, message = "El número de porciones debe ser al menos 1")
     private Integer numeroPorciones;
 
-    @OneToMany(mappedBy = "detalleAlimentacion") // <<--- Corregimos el mappedBy
-    @JsonBackReference
-    private List<PlanAlimentacion> planesAlimentacion;
+    @ManyToOne // <<--- Corregimos el mappedBy
+    @JsonBackReference(value = "detalleAlimentacion")
+    private PlanAlimentacion planeAlimentacion;
 
     @OneToMany(mappedBy = "detalleAlimentacion")
     @JsonManagedReference

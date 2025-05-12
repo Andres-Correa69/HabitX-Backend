@@ -31,9 +31,9 @@ public class PlanAlimentacion {
 
     @ManyToOne
     @JoinColumn(name = "idDetalleAlimentacion")
+    @JsonManagedReference(value = "detalleAlimentacion")
     private DetalleAlimentacion detalleAlimentacion;
 
     @OneToMany(mappedBy = "planAlimentacion")
-    @JsonManagedReference
     private List<DesafioAlimentacion> desafiosAlimentacion;
 }
