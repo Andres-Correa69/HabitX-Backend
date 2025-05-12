@@ -48,4 +48,12 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<ObjetivoNutricional> objetivos;
 
+    @ManyToMany
+    @JoinTable(
+            name = "Usuario_ArticuloNutricional",
+            joinColumns = @JoinColumn(name = "idUsuario"),
+            inverseJoinColumns = @JoinColumn(name = "idArticuloNutricional")
+    )
+    private List<ArticuloNutricional> articulosNutricionales; // <<--- AÑADIMOS ESTO
 }
+
