@@ -1,5 +1,6 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.Min;
@@ -20,6 +21,7 @@ public class DetalleAlimentacion {
     private Integer numeroPorciones;
 
     @OneToMany(mappedBy = "detalleAlimentacion") // <<--- Corregimos el mappedBy
+    @JsonBackReference
     private List<PlanAlimentacion> planesAlimentacion;
 
     @OneToMany(mappedBy = "detalleAlimentacion")
