@@ -103,7 +103,7 @@ public class PlanAlimentacionController {
 
         if (objetivoOptional.isPresent()) {
             ObjetivoNutricional objetivo = objetivoOptional.get();
-            PlanAlimentacion planExistente = objetivo.getPlanAlimentacion();
+            PlanAlimentacion planExistente = (PlanAlimentacion) objetivo.getPlanAlimentacion();
 
             if (planExistente != null) {
                 planExistente.setNombre(planActualizado.getNombre());
@@ -128,7 +128,7 @@ public class PlanAlimentacionController {
 
         if (objetivoOptional.isPresent()) {
             ObjetivoNutricional objetivo = objetivoOptional.get();
-            PlanAlimentacion planExistente = objetivo.getPlanAlimentacion();
+            PlanAlimentacion planExistente = (PlanAlimentacion) objetivo.getPlanAlimentacion();
 
             if (planExistente != null) {
                 planAlimentacionRepository.delete(planExistente);

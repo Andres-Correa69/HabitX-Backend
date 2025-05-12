@@ -7,6 +7,8 @@ import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 @Table(name = "ObjetivoNutricional")
 @Data
@@ -25,7 +27,7 @@ public class ObjetivoNutricional {
     @JsonBackReference
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "objetivoNutricional", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "objetivoNutricional", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private PlanAlimentacion planAlimentacion;
+    private List<PlanAlimentacion> planAlimentacion;
 }

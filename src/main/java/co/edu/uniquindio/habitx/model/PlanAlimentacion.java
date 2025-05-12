@@ -17,7 +17,7 @@ public class PlanAlimentacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPlanAlimentacion;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idObjetivoNutricional", unique = true)
     @JsonBackReference
     private ObjetivoNutricional objetivoNutricional; // Nombre consistente
