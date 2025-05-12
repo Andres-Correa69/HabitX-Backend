@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/planes")
@@ -78,8 +79,7 @@ public class PlanAlimentacionController {
     @PostMapping("/{idUsuario}/objetivos")
     public ResponseEntity<PlanAlimentacion> crearPlanAlimentacionParaUsuario(
             @PathVariable Integer idUsuario,
-            @Valid @RequestBody PlanAlimentacion nuevoPlanAlimentacion,
-            @RequestParam(value = "idDetalleAlimentacion", required = false) Integer idDetalleAlimentacion) {
+            @Valid @RequestBody PlanAlimentacion nuevoPlanAlimentacion) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(idUsuario);
 
         if (usuarioOptional.isPresent()) {
@@ -88,10 +88,14 @@ public class PlanAlimentacionController {
 
             if (objetivoDelUsuario != null) {
                 nuevoPlanAlimentacion.setObjetivoNutricional(objetivoDelUsuario);
-                if (idDetalleAlimentacion != null) {
-                    Optional<DetalleAlimentacion> detalleAlimentacionOptional = detalleAlimentacionRepository.findById(idDetalleAlimentacion);
-                    detalleAlimentacionOptional.ifPresent(nuevoPlanAlimentacion::setDetalleAlimentacion);
-                }
+
+                // Generar un ID aleatorio entre 1 y 5 (inclusive)
+                Random random = new Random();
+                int idDetalleAlimentacionAleatorio = random.nextInt(5) + 1;
+
+                Optional<DetalleAlimentacion> detalleAlimentacionOptional = detalleAlimentacionRepository.findById(idDetalleAlimentacionAleatorio);
+                detalleAlimentacionOptional.ifPresent(nuevoPlanAlimentacion::setDetalleAlimentacion);
+
                 PlanAlimentacion planGuardado = planAlimentacionRepository.save(nuevoPlanAlimentacion);
                 return new ResponseEntity<>(planGuardado, HttpStatus.CREATED);
             } else {
