@@ -1,5 +1,6 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -23,5 +24,6 @@ public class Recomendacion {
     private LocalDateTime fecha;
 
     @ManyToMany(mappedBy = "recomendaciones")
+    @JsonManagedReference
     private List<SeguimientoNutricional> seguimientosNutricionales;
 }

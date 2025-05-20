@@ -1,5 +1,6 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -20,5 +21,6 @@ public class Estado {
     private String descripcion;
 
     @ManyToMany(mappedBy = "estados")
+    @JsonManagedReference
     private List<SeguimientoNutricional> seguimientosNutricionales;
 }

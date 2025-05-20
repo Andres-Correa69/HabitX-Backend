@@ -2,6 +2,7 @@ package co.edu.uniquindio.habitx.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +33,7 @@ public class ArticuloNutricional {
     private Categoria categoria;
 
     @ManyToMany(mappedBy = "articulosNutricionales")
+    @JsonManagedReference
     private List<Usuario> usuarios; // Relación ManyToMany con Usuario
 
     @ElementCollection

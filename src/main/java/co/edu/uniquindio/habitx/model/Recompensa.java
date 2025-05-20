@@ -1,5 +1,6 @@
 package co.edu.uniquindio.habitx.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -22,10 +23,11 @@ public class Recompensa {
 
     @ManyToOne
     @JoinColumn(name = "idNivelCuenta")
+    @JsonManagedReference
     private NivelCuenta nivelCuenta;
 
     @ManyToMany(mappedBy = "recompensas")
-    @JsonBackReference
+    @JsonManagedReference
     private List<CuentaUsuario> cuentasUsuario;
 
     @Column(nullable = false)

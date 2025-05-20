@@ -1,5 +1,7 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -18,12 +20,15 @@ public class SeguimientoNutricional {
 
     @ManyToOne
     @JoinColumn(name = "idDetalleAlimentacion")
+    @JsonManagedReference
     private DetalleAlimentacion detalleAlimentacion;
 
-    @OneToOne(mappedBy = "seguimientoNutricional") // <<--- Aquí está la relación con PerfilNutricional
+    @OneToOne(mappedBy = "seguimientoNutricional")// <<--- Aquí está la relación con PerfilNutricional
+    @JsonBackReference
     private PerfilNutricional perfilNutricional;
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(
             name = "SeguimientoNutricional_Estado",
             joinColumns = @JoinColumn(name = "idSeguimientoNutricional"),
@@ -32,6 +37,7 @@ public class SeguimientoNutricional {
     private List<Estado> estados;
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(
             name = "SeguimientoNutricional_Recomendacion",
             joinColumns = @JoinColumn(name = "idSeguimientoNutricional"),

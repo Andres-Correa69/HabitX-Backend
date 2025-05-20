@@ -1,6 +1,7 @@
 package co.edu.uniquindio.habitx.model;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -36,10 +37,12 @@ public class Usuario {
 
     @ManyToOne
     @JoinColumn(name = "idGenero")
+    @JsonManagedReference
     private Genero genero;
 
     @ManyToOne
     @JoinColumn(name = "idLogin")
+    @JsonManagedReference
     private Login login;
 
     @OneToOne
@@ -52,6 +55,7 @@ public class Usuario {
     private ObjetivoNutricional objetivo; // Cambia List a un solo ObjetivoNutricional
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(
             name = "Usuario_ArticuloNutricional",
             joinColumns = @JoinColumn(name = "idUsuario"),

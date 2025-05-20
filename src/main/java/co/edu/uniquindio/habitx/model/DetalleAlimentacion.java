@@ -30,5 +30,6 @@ public class DetalleAlimentacion {
     private List<Receta> recetas;
 
     @OneToMany(mappedBy = "detalleAlimentacion")
+    @JsonBackReference
     private List<SeguimientoNutricional> seguimientosNutricionales;
 }

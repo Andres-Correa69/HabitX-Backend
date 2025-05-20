@@ -1,5 +1,6 @@
 package co.edu.uniquindio.habitx.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ public class CuentaUsuario {
 
     @OneToOne
     @JoinColumn(name = "idUsuario", unique = true)
+    @JsonManagedReference
     private Usuario usuario;
 
     @ManyToMany
@@ -26,10 +28,11 @@ public class CuentaUsuario {
             joinColumns = @JoinColumn(name = "idCuentaUsuario"),
             inverseJoinColumns = @JoinColumn(name = "idRecompensa")
     )
-    @JsonManagedReference
+    @JsonBackReference
     private List<Recompensa> recompensas;
 
     @ManyToOne
     @JoinColumn(name = "idNivelCuenta")
+    @JsonBackReference
     private NivelCuenta nivelCuenta;
 }

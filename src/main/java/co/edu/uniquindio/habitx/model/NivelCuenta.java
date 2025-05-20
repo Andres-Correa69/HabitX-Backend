@@ -1,6 +1,8 @@
 package co.edu.uniquindio.habitx.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
@@ -21,8 +23,10 @@ public class NivelCuenta {
     private String nivel;
 
     @OneToMany(mappedBy = "nivelCuenta")
+    @JsonManagedReference
     private List<CuentaUsuario> cuentasUsuario;
 
     @OneToMany(mappedBy = "nivelCuenta")
+    @JsonBackReference
     private List<Recompensa> recompensas;
 }

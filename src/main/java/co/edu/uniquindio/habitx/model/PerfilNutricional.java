@@ -3,6 +3,7 @@ package co.edu.uniquindio.habitx.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class PerfilNutricional {
     //La relacion puede ser @OneToOne o @ManyToOne, dependiendo de la cardinalidad
     @OneToOne // <<--- Relación con SeguimientoNutricional
     @JoinColumn(name = "idSeguimientoNutricional")
+    @JsonManagedReference
     private SeguimientoNutricional seguimientoNutricional;
 
     @ManyToOne
