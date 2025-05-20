@@ -5,6 +5,7 @@ package co.edu.uniquindio.habitx.controller;
 import co.edu.uniquindio.habitx.model.DesafioAlimentacion;
 import co.edu.uniquindio.habitx.model.CuentaUsuario;
 import co.edu.uniquindio.habitx.model.NivelCuenta;
+import co.edu.uniquindio.habitx.model.Usuario;
 import co.edu.uniquindio.habitx.repositories.DesafioAlimentacionRepository;
 import co.edu.uniquindio.habitx.repositories.CuentaUsuarioRepository;
 import co.edu.uniquindio.habitx.repositories.NivelCuentaRepository;
@@ -35,6 +36,13 @@ public class DesafioAlimentacionController {
     public ResponseEntity<List<DesafioAlimentacion>> listarDesafios() {
         return new ResponseEntity<>(desafioAlimentacionRepository.findAll(), HttpStatus.OK);
     }
+
+    @GetMapping("/sql/getdesafios/recordatorios")
+    public List<DesafioAlimentacion>  obtenerDesafiosRecordatoriosSQL(){
+
+        return desafioAlimentacionRepository.obtenerDesafiosRecordatoriosSQL();
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<DesafioAlimentacion> obtenerDesafio(@PathVariable Integer id) {
