@@ -18,6 +18,12 @@ public class RecetaController {
     @Autowired
     private RecetaRepository recetaRepository;
 
+
+    @GetMapping("/sql/getrecetas")
+    public List<Receta> obtenerRecetas() {
+        return recetaRepository.obtenerTodasLasRecetasSQL();
+    }
+
     @GetMapping
     public ResponseEntity<List<Receta>> listarRecetas() {
         return new ResponseEntity<>(recetaRepository.findAll(), HttpStatus.OK);

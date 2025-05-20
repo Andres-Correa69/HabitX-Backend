@@ -22,4 +22,10 @@ public class ArticuloNutricionalController {
     public ResponseEntity<List<ArticuloNutricional>> listarArticulosNutricionales() {
         return new ResponseEntity<>(articuloNutricionalRepository.findAll(), HttpStatus.OK);
     }
+
+    // GET: Todos los artículos desde SQL puro
+    @GetMapping("/sql/getarticulos")
+    public List<ArticuloNutricional> obtenerArticulosSQL() {
+        return articuloNutricionalRepository.obtenerArticulosSQL();
+    }
 }
