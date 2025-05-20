@@ -3,6 +3,7 @@ package co.edu.uniquindio.habitx.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -36,5 +37,6 @@ public class PlanAlimentacion {
 
     @OneToMany(mappedBy = "planAlimentacion")
     @JsonManagedReference
+
     private List<DesafioAlimentacion> desafiosAlimentacion;
 }

@@ -21,11 +21,20 @@ public class UsuarioController {
     @Autowired
     private CuentaUsuarioRepository cuentaUsuarioRepository;
 
-    @GetMapping("/sql/getusuarios") // Endpoint: http://localhost:8080/api/usuarios/sql
+    @GetMapping("/sql/getusuarios")
     public List<Usuario>  obtenerUsuariosSQL() {
 
         return usuarioRepository.obtenerTodosLosUsuariosSQL();
     }
+    @GetMapping("/sql/getusuarios/perfiles")
+    public List<Usuario>  obtenerUsuariosSQLperfiles(){
+
+        return usuarioRepository.obtenerTodosLosUsuariosSQLperfiles();
+    }
+
+
+
+
 
     @GetMapping
     public List<Usuario> getAllUsuarios() {
