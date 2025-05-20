@@ -19,4 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query(value = "SELECT u.id_usuario, u.nombre, u.apellido, u.edad, p.altura, p.peso, p.imc FROM usuario u INNER JOIN perfil_nutricional p ON u.id_usuario = p.id_usuario;", nativeQuery = true)
     List<Usuario> obtenerTodosLosUsuariosSQLperfiles();
 
+    @Query(value = "SELECT u.id_usuario, u.nombre, u.apellido, u.edad, u.email, u.id_genero, u.id_login, u.id_perfil_nutricional, g.descripcion FROM usuario u INNER JOIN genero g ON u.id_genero = g.id_genero WHERE g.descripcion = 'Masculino';", nativeQuery = true)
+    List<Usuario> obtenerUsuariosMasculinosSQL();
+
 }

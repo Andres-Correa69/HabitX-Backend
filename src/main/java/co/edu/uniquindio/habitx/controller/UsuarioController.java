@@ -32,7 +32,11 @@ public class UsuarioController {
         return usuarioRepository.obtenerTodosLosUsuariosSQLperfiles();
     }
 
+    @GetMapping("/sql/getusuarios/genero")
+    public List<Usuario>  obtenerUsuariosMasculinosSQL() {
 
+        return usuarioRepository.obtenerUsuariosMasculinosSQL();
+    }
 
 
 
