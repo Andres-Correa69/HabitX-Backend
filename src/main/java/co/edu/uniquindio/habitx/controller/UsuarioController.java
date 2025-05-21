@@ -44,7 +44,11 @@ public class UsuarioController {
         return usuarioRepository.obtenerUsuariosMayorPromedioIMC();
     }
 
+    @GetMapping("/sql/getusuarios/promedioPesoGenero")
+    public List<Usuario>  obtenerUsuariosMayorPromedioPesoGeneroSQL() {
 
+        return usuarioRepository.obtenerUsuariosMayorPromedioPesoGenero();
+    }
 
 
     @GetMapping

@@ -24,4 +24,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Query(value = "SELECT u.id_usuario, u.edad, u.email, u.id_genero, u.id_login, u.id_perfil_nutricional, u.nombre, u.apellido, pn.imc FROM usuario u JOIN perfil_nutricional pn ON u.id_perfil_nutricional = pn.id_perfil_nutricional WHERE pn.imc > (   SELECT AVG(imc) FROM perfil_nutricional);", nativeQuery = true)
     List<Usuario> obtenerUsuariosMayorPromedioIMC();
+
+    @Query(value = "SELECT u.id_usuario, u.edad, u.email, u.id_genero, u.id_login, u.id_perfil_nutricional, u.nombre, u.apellido, g.descripcion AS genero, pn.peso FROM usuario u JOIN genero g ON u.id_genero = g.id_genero JOIN perfil_nutricional pn ON u.id_perfil_nutricional = pn.id_perfil_nutricional WHERE pn.peso > ( SELECT AVG(pn2.peso) FROM usuario u2 JOIN perfil_nutricional pn2 ON u2.id_perfil_nutricional = pn2.id_perfil_nutricional WHERE u2.id_genero = u.id_genero);", nativeQuery = true)
+    List<Usuario> obtenerUsuariosMayorPromedioPesoGenero();
 }
