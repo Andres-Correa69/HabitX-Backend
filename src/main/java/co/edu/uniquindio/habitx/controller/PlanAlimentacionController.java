@@ -49,6 +49,14 @@ public class PlanAlimentacionController {
         return planAlimentacionRepository.obtenerPlanesyDesafiosSQL();
     }
 
+    @GetMapping("/sql/getplanes/recetasCalorias")
+    public List<PlanAlimentacion>  obtenerRecetasCaloriasSQL(){
+
+        return planAlimentacionRepository.obtenerRecetasCaloriasSQL();
+    }
+
+
+
     @GetMapping("/usuario/{idUsuario}") // Endpoint para buscar por idUsuario
     public ResponseEntity<List<PlanAlimentacion>> obtenerPlanesAlimentacionPorUsuario(@PathVariable Integer idUsuario) {
         List<PlanAlimentacion> planesAlimentacion = planAlimentacionRepository.findByObjetivoNutricional_Usuario_IdUsuario(idUsuario);

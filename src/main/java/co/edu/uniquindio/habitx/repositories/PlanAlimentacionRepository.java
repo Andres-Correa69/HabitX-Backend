@@ -15,4 +15,7 @@ public interface PlanAlimentacionRepository extends JpaRepository<PlanAlimentaci
 
     @Query(value = "SELECT DISTINCT pl.nombre, pl.id_plan_alimentacion, pl.id_detalle_alimentacion, pl.fecha_inicio, pl.id_objetivo_nutricional, de.descripcion FROM plan_alimentacion pl  JOIN desafio_alimentacion de ON pl.id_plan_alimentacion = de.id_plan_alimentacion;", nativeQuery = true)
     List<PlanAlimentacion> obtenerPlanesyDesafiosSQL();
+
+    @Query(value = "SELECT DISTINCT pl.nombre, pl.id_plan_alimentacion, pl.id_detalle_alimentacion, pl.fecha_inicio, pl.id_objetivo_nutricional, r.nombre AS nombre_receta,  r.calorias FROM plan_alimentacion pl JOIN receta r ON pl.id_detalle_alimentacion = r.id_detalle_alimentacion WHERE CAST(r.calorias AS UNSIGNED) > 500;", nativeQuery = true)
+    List<PlanAlimentacion> obtenerRecetasCaloriasSQL();
 }
