@@ -10,7 +10,8 @@ import java.util.List;
 @Repository
 public interface ArticuloNutricionalRepository extends JpaRepository<ArticuloNutricional, Integer> {
 
-    @Query(value = "SELECT * FROM articulo_nutricional", nativeQuery = true)
+    //query simple2 obtener los articulos nutricionales
+    @Query(value = "SELECT * FROM articulo_nutricional;", nativeQuery = true)
     List<ArticuloNutricional> obtenerArticulosSQL();
 
 }

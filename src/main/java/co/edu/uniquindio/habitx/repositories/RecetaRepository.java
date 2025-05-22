@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface RecetaRepository extends JpaRepository<Receta, Integer> {
 
-    @Query(value = "SELECT * FROM receta", nativeQuery = true)
+    //query simple3 obtener todas las recetas
+    @Query(value = "SELECT * FROM receta;", nativeQuery = true)
     List<Receta> obtenerTodasLasRecetasSQL();
 }
